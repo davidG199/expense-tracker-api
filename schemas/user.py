@@ -1,11 +1,11 @@
 
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 
 class User(BaseModel):
     id: Optional[int] = None
     username: str = Field(min_length=2, max_length=50)
-    email:str = Field(min_length=4, max_length=99)
+    email: EmailStr
     password: str
 
     model_config = {
