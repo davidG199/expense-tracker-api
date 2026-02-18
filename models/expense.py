@@ -10,7 +10,7 @@ class Expense(Base):
     description = Column(String)
     category = Column(String)
     date = Column(DateTime)
-    mount = Column(Float)
+    amount = Column(Float)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="expenses")

@@ -33,7 +33,7 @@ class ExpenseService():
         expense.description = data.description
         expense.category = data.category
         expense.date = data.date
-        expense.mount = data.mount
+        expense.amount = data.amount
         self.db.commit()
         return expense
     
