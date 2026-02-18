@@ -3,10 +3,14 @@ from fastapi.responses import HTMLResponse
 from config.database import Base, engine
 from routers.expenses import expense_router
 from routers.users import user_router
+from config.baseSettings import settings
+
+from models.user import User
+from models.expense import Expense
 
 app = FastAPI()
 
-app.title = "Expense-tracker-api"
+app.title = settings.APP_NAME
 app.version = "0.0.1"
 
 Base.metadata.create_all(bind=engine)

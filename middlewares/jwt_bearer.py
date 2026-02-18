@@ -1,16 +1,12 @@
 from typing import Annotated
-from dotenv import load_dotenv
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+# from jose import JWTError
 from models.user import User as UserModel
 from config.database import Session
 from utils.jwt_manager import verify_access_token
 
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
-
-load_dotenv()
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
