@@ -4,7 +4,13 @@ from config.baseSettings import settings
 
 engine = create_engine(settings.DATABASE_URL, echo=settings.DEBUG)
 
-Session = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
