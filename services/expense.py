@@ -2,12 +2,13 @@ from datetime import datetime, timedelta
 from typing import Optional
 from models.expense import Expense as ExpenseModel
 from schemas.expense import Expense
+from sqlalchemy.orm import Session
 
 
 
 class ExpenseService():
 
-    def __init__(self, db, user_id: int) -> None:
+    def __init__(self, db: Session, user_id: int) -> None:
         self.db = db
         self.user_id = user_id
 

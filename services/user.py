@@ -1,16 +1,19 @@
+import bcrypt
 from models.user import User as UserModel
 from schemas.user import User
-import bcrypt
+from sqlalchemy.orm import Session
 
 class UserService():
 
-    def __init__(self, db) -> None:
+    def __init__(self, db: Session) -> None:
         self.db = db
 
+    #funcion para obtener los usuarios
     def get_users(self):
         result = self.db.query(UserModel).all()
         return result
     
+    #funcion para crear un usuario
     def create_user(self, user: User):
 
         #hash de la contraseña antes de guardar usuario
@@ -51,10 +54,10 @@ class UserService():
     #Eliminar usuario por su id
     def delete_user(self, user_id: int):
         user = self.get_user_by_id(user_id)
-        if user:
-            self.db.delete(user)
-            self.db.commit()
-            return True
-        return False
+        if not user:
+            return False
+        self.db.delete(user)
+        self.db.commit()
+        return True
 
 
