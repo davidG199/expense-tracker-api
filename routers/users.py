@@ -1,7 +1,9 @@
 from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from middlewares.jwt_bearer import get_current_user
 from schemas.user import User
+from models.user import User as UserModel
 from config.database import get_db
 from sqlalchemy.orm import Session
 from services.user import UserService
@@ -12,10 +14,10 @@ from utils.jwt_manager import create_access_token
 user_router = APIRouter(prefix="/user", tags=["user"])
 
 #endpoint para obtener todos los usuarios registrados, se devuelve una lista de usuarios en formato JSON
-@user_router.get("/", response_model=List[User], status_code=200)
-def get_users(db: Session = Depends(get_db)):
-    result = UserService(db).get_users()
-    return JSONResponse(status_code=200, content=jsonable_encoder(result))
+# @user_router.get("/", response_model=List[User], status_code=200)
+# def get_users(db: Session = Depends(get_db)):
+#     result = UserService(db).get_users()
+    # return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
 #endpoint para crear un nuevo usuario, se verifica si el email ya esta registrado y se devuelve un mensaje de éxito o error en formato JSON
 @user_router.post("/new-user", response_model=dict, status_code=201)
@@ -39,12 +41,15 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Sessio
     return {"access_token": token, "token_type": "bearer"}
     
 #endpoint para eliminar un usuario por su id, se verifica si el usuario existe y se elimina, si no existe se devuelve un error 404
-@user_router.delete("/delete-user/{user_id}", status_code=200)
-def delete_user(user_id: int, db: Session = Depends(get_db)):
-    success = UserService(db).delete_user(user_id) #llamaos al método delete_user del servicio de usuario para eliminar el usuario por su id
-    if not success:
-        raise HTTPException(status_code=404, detail="User not found") #si el usuario no existe se devuelve un error 404
-    return JSONResponse(status_code=200, content={"message": "User deleted successfully"}) #si el usuario se elimina correctamente se devuelve un mensaje de éxito
+# @user_router.delete("/delete-user/{user_id}", status_code=200)
+# def delete_user(
+#     user_id: int, 
+#     current_user: UserModel = Depends(get_current_user), 
+#     db: Session = Depends(get_db)):
+#     success = UserService(db).delete_user(user_id) #llamaos al método delete_user del servicio de usuario para eliminar el usuario por su id
+#     if not success:
+#         raise HTTPException(status_code=404, detail="User not found") #si el usuario no existe se devuelve un error 404
+#     return JSONResponse(status_code=200, content={"message": "User deleted successfully"}) #si el usuario se elimina correctamente se devuelve un mensaje de éxito
 
 
 
