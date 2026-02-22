@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     # API Configuration (opcional)
     APP_NAME: str = "Expense Tracker API"
     DEBUG: bool = False
+
+    # configuracion de CORS
+    ALLOWED_ORIGINS: list[str] = ["*"]  # Permitir todas las fuentes (en producción, especificar dominios permitidos en desarrollo)
     
     model_config = SettingsConfigDict(
         env_file=".env",  # Lee desde .env automáticamente
